@@ -38,6 +38,17 @@ findNum<-function(y,l){
 
 ```{r,eval=FALSE}
 raw <- read.delim("data/weather.txt",check.names = F, na.strings = ".")
+
+library(reshape)
+raw.melt = melt(raw, id = c("year","month","element"))
+raw.melt$variable = as.numeric(raw.melt$variable)
+date = paste(raw.melt$year,raw.melt$month,raw.melt$variable,sep = "-")
+raw.melt$Date = as.Date(date)
+raw.melt = raw.melt[!is.na(raw.melt$Date),]
+raw.new = raw.melt[,c("Date","element","value")]
+
+raw.wide = reshape(raw.new,v.names = "value",idvar = "Date",timevar = "element",direction = "wide")
+raw.wide$change = raw.wide$value.tmax-raw.wide$value.tmin
 ```
 
 ## 分组处理
