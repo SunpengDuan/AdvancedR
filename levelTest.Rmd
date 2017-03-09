@@ -27,6 +27,13 @@ header-includes:
 findNum<-function(y,l){
   #y是输入向量
   #l是1连续出现的长度
+        identify = NULL
+        for(i in 1:(length(y)-l+1)){
+                y.sub = y[(i:(i+l-1))]
+                id = identical(y.sub,rep(1,l))
+                identify = c(identify,id)
+        }
+        which(identify == TRUE)
 }
 
 ```
