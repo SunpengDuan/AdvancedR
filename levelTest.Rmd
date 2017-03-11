@@ -66,5 +66,13 @@ raw.wide$change = raw.wide$value.tmax-raw.wide$value.tmin
 #计算hfflights
 library(hflights)
 str(hflights)
+
+hflights.new = select(hflights,Month,UniqueCarrier,ArrDelay)
+identify = as.factor(paste(hflights.new$Month,hflights.new$UniqueCarrier,sep="."))
+results = tapply(hflights.new$ArrDelay,identify,function(x){quantile(x,seq(0,1,0.1),na.rm = TRUE)})
+
+results.dataframe = data.frame(Reduce(rbind, results))
+row.names(results.dataframe) = unique(identify)
+colnames(results.dataframe) = paste(seq(0,100,10),"%",sep = "")
 ```
 
